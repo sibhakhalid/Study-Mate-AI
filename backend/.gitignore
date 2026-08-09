@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env
+.env.example
+backend/.env
+backend/.env.example
+
+# Firebase service account (if ever downloaded as a file instead of env vars)
+*serviceAccountKey.json
+firebase-adminsdk-*.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Editor/OS
+.DS_Store
+.vscode/
+.idea/
+
+# Build artifacts
+dist/
+coverage/
