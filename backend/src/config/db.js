@@ -6,6 +6,7 @@ mongoose.set("strictQuery", true);
 
 const MAX_RETRIES = 5;
 const RETRY_DELAY_MS = 3000;
+let connectionPromise;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -18,6 +19,18 @@ function sleep(ms) {
  * requests without a DB would just fail every request anyway.
  */
 export async function connectDB() {
+  if (mongoose.connection.readyState === 1) return;
+  if (connectionPromise) return connectionPromise;
+
+  connectionPromise = connectWithRetry();
+  try {
+    await connectionPromise;
+  } finally {
+    connectionPromise = null;
+  }
+}
+
+async function connectWithRetry() {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       await mongoose.connect(env.mongodbUri, {
@@ -31,8 +44,9 @@ export async function connectDB() {
         error: err.message,
       });
       if (attempt === MAX_RETRIES) {
-        logger.error("MongoDB connection failed permanently. Exiting.");
-        process.exit(1);
+        const connectionError = new Error("MongoDB connection failed permanently.");
+        logger.error(connectionError.message);
+        throw connectionError;
       }
       await sleep(RETRY_DELAY_MS);
     }
