@@ -5,14 +5,13 @@ node_modules/
 .env
 .env.local
 .env.*.local
-.env
 .env.example
 backend/.env
 backend/.env.example
 
 # Firebase service account (if ever downloaded as a file instead of env vars)
-*serviceAccountKey.json
-firebase-adminsdk-*.json
+*serviceAccountKey.json*
+*firebase-adminsdk-*.json*
 
 # Logs
 logs/
