@@ -15,7 +15,7 @@ dist-ssr
 # Environment variables (Firebase config, API base URL) — never commit these
 .env
 .env.*
-!.env.example
+*.env.example
 
 # Editor directories and files
 .vscode/*
