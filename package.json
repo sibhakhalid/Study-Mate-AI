@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,16 +13,28 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "class-variance-authority": "^0.7.1",
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.0",
     "firebase": "^11.2.0",
+    "firebase-admin": "^12.7.0",
     "framer-motion": "^12.43.0",
+    "helmet": "^8.0.0",
     "lucide-react": "^1.28.0",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.2",
     "recharts": "^3.10.1",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",

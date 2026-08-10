@@ -1,6 +1,6 @@
-import { app } from "../src/app.js";
-import { connectDB } from "../src/config/db.js";
-import { env } from "../src/config/env.js";
+import app from "../backend/src/app.js";
+import { connectDB } from "../backend/src/config/db.js";
+import { env } from "../backend/src/config/env.js";
 
 function applyCorsHeaders(req, res) {
   const origin = req.headers.origin;
@@ -13,13 +13,9 @@ function applyCorsHeaders(req, res) {
   res.setHeader("Vary", "Origin");
 }
 
-// Vercel keeps warm function instances between requests, so the cached
-// Mongoose connection is reused instead of opening a new connection per call.
 export default async function handler(req, res) {
   applyCorsHeaders(req, res);
 
-  // Preflight must not wait for MongoDB. Browsers need this response before
-  // they will send credentialed API requests to the serverless function.
   if (req.method === "OPTIONS") return res.status(204).end();
 
   try {

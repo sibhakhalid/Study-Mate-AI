@@ -8,7 +8,26 @@ import { auth } from "../config/firebase";
  * mock implementations already returned.
  */
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || null;
+const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+const isLocalhostUrl = configuredBaseUrl && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(?:\/|$)/i.test(configuredBaseUrl);
+
+function normalizeBaseUrl(value) {
+  if (!value) return value;
+
+  const normalized = value.replace(/\/+$/, "");
+  const hasApiVersion = /\/api\/v1$/i.test(normalized);
+  return hasApiVersion ? normalized : `${normalized}/api/v1`;
+}
+
+// A localhost value must never escape into a production bundle. The relative
+// fallback keeps the single-domain Vercel deployment working when its env var
+// is missing, while Vercel's VITE_API_BASE_URL can still point at a separate
+// deployed API when needed.
+export const API_BASE_URL =
+  import.meta.env.PROD && isLocalhostUrl
+    ? "/api/v1"
+    : normalizeBaseUrl(configuredBaseUrl) || (import.meta.env.PROD ? "/api/v1" : null);
+export const isBackendConfigured = Boolean(API_BASE_URL);
 
 async function getAuthHeaders(forceRefresh = false) {
   // auth is null when Firebase env vars aren't configured (see
@@ -27,7 +46,7 @@ async function getAuthHeaders(forceRefresh = false) {
 }
 
 async function sendRequest(path, options, authHeaders) {
-  return fetch(`${BASE_URL}${path}`, {
+  return fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +57,7 @@ async function sendRequest(path, options, authHeaders) {
 }
 
 export async function apiRequest(path, options = {}) {
-  if (!BASE_URL) {
+  if (!API_BASE_URL) {
     throw new Error(
       `No backend configured yet. Attempted request to "${path}". ` +
         `Feature services should fall back to local/mock data until VITE_API_BASE_URL is set.`

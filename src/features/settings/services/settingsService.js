@@ -1,5 +1,5 @@
 import { seedProfile, seedPreferences, seedNotifications } from "../data/mockProfile";
-import { apiRequest } from "../../../services/httpClient";
+import { apiRequest, isBackendConfigured } from "../../../services/httpClient";
 import { normalizeDoc } from "../../../utils/normalizeMongoDoc";
 
 /**
@@ -20,7 +20,7 @@ import { normalizeDoc } from "../../../utils/normalizeMongoDoc";
  * endpoint) directly from AccountSection.jsx, not through here.
  */
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 const PROFILE_KEY = "studymate.profile";
 const PREFERENCES_KEY = "studymate.preferences";

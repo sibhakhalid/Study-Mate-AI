@@ -1,5 +1,5 @@
 import { seedNotes } from "../data/mockNotes";
-import { apiRequest } from "../../../services/httpClient";
+import { apiRequest, isBackendConfigured } from "../../../services/httpClient";
 import { normalizeDoc, normalizeDocs } from "../../../utils/normalizeMongoDoc";
 
 /**
@@ -13,7 +13,7 @@ import { normalizeDoc, normalizeDocs } from "../../../utils/normalizeMongoDoc";
  * "force-error".
  */
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 const STORAGE_KEY = "studymate.notes";
 const LATENCY = 500;

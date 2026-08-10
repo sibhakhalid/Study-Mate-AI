@@ -107,10 +107,10 @@ frontend's mock `progressService.js`.
 
 ## Connecting the frontend
 
-The frontend's `src/services/httpClient.js` already has this exact contract
-built in — it just needs `VITE_API_BASE_URL` set (e.g.
-`http://localhost:5000/api/v1`) and each feature's `*Service.js` to call
-`apiRequest()` instead of reading `localStorage`/mock data. Firebase's ID
+The frontend's `src/services/httpClient.js` owns this contract and every
+feature service calls `apiRequest()`. Set `VITE_API_BASE_URL` to
+`http://localhost:5000/api/v1` locally or
+`https://study-mate-ai-b41e.vercel.app/api/v1` in the Vercel project. Firebase's ID
 token should be attached as the `Authorization` header on every call — the
 cleanest place to do that is inside `httpClient.js` itself via
 `firebase.auth().currentUser.getIdToken()`.

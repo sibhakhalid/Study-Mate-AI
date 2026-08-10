@@ -1,6 +1,6 @@
 import { mockDecks } from "../data/mockDecks";
 import { mockCardBank } from "../data/mockCardBank";
-import { apiRequest } from "../../../services/httpClient";
+import { apiRequest, isBackendConfigured } from "../../../services/httpClient";
 import { normalizeDoc, normalizeDocs } from "../../../utils/normalizeMongoDoc";
 import { resolveIcon } from "../utils/iconRegistry";
 
@@ -14,7 +14,7 @@ import { resolveIcon } from "../utils/iconRegistry";
  * To test the error state: select "Force error (testing)" as the deck.
  */
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 const PROGRESS_KEY = "studymate.flashcardMastery";
 const LATENCY = 500;

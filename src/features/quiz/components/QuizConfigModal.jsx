@@ -3,12 +3,13 @@ import Modal from "../../../components/ui/Modal";
 import Button from "../../../components/ui/Button";
 import { cn } from "../../../utils/cn";
 import { mockTopics, questionCountOptions, difficultyOptions } from "../data/mockTopics";
+import { isBackendConfigured } from "../../../services/httpClient";
 
 // The "force error" card is a dev-only way to exercise the failure UI
 // without a backend — like notes' "force-error" search term and
 // flashcards' force-error deck, it has no place in front of a real
 // user once a real backend (and real Gemini calls) are connected.
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 const topicChoices = USE_BACKEND ? mockTopics.filter((t) => t.id !== "force-error") : mockTopics;
 
 export default function QuizConfigModal({ isOpen, onClose, onGenerate, generating }) {

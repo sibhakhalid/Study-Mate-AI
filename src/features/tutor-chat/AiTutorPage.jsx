@@ -7,8 +7,9 @@ import ChatEmptyState from "./components/ChatEmptyState";
 import TypingIndicator from "./components/TypingIndicator";
 import ChatErrorState from "./components/ChatErrorState";
 import ChatInput from "./components/ChatInput";
+import { isBackendConfigured } from "../../services/httpClient";
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 export default function AiTutorPage() {
   const {

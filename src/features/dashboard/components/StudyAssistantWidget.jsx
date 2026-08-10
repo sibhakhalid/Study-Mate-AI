@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Sparkles, RefreshCw, AlertCircle, Send } from "lucide-react";
 import Card from "../../../components/ui/Card";
 import * as studyAssistantService from "../services/studyAssistantService";
+import { isBackendConfigured } from "../../../services/httpClient";
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 /**
  * Self-contained: unlike the rest of the dashboard (which reads mock

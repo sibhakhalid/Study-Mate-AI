@@ -1,4 +1,4 @@
-import { apiRequest } from "../../../services/httpClient";
+import { apiRequest, isBackendConfigured } from "../../../services/httpClient";
 
 /**
  * Purely AI-backed — unlike other features, there's no meaningful mock
@@ -7,7 +7,7 @@ import { apiRequest } from "../../../services/httpClient";
  * message otherwise rather than faking a plausible-looking answer.
  */
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 function requireBackend() {
   if (!USE_BACKEND) {

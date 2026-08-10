@@ -1,5 +1,5 @@
 import { seedTasks, seedGoals } from "../data/mockTasks";
-import { apiRequest } from "../../../services/httpClient";
+import { apiRequest, isBackendConfigured } from "../../../services/httpClient";
 import { normalizeDoc, normalizeDocs } from "../../../utils/normalizeMongoDoc";
 
 /**
@@ -11,7 +11,7 @@ import { normalizeDoc, normalizeDocs } from "../../../utils/normalizeMongoDoc";
  * changes to consume the real API.
  */
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 const TASKS_KEY = "studymate.plannerTasks";
 const GOALS_KEY = "studymate.plannerGoals";

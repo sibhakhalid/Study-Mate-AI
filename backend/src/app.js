@@ -12,24 +12,30 @@ import { ApiResponse } from "./utils/ApiResponse.js";
 import apiRoutes from "./routes/index.js";
 
 export const app = express();
+export default app;
 
 // Behind a reverse proxy (Render, Railway, Heroku, nginx) in production,
 // so rate limiting and req.ip see the real client IP, not the proxy's.
 app.set("trust proxy", 1);
 
 app.use(helmet());
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow Vite's local dev ports while keeping credentials restricted to
-      // configured origins in deployed environments.
-      const isLocalDevOrigin =
-        origin && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
-      callback(null, !origin || env.clientOrigins.includes(origin) || isLocalDevOrigin);
-    },
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Requests without an Origin header include health checks and server-to-server calls.
+    if (!origin || env.clientOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(null, false);
+  },
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+// Apply CORS before every route and error handler so headers are present on
+// successful responses, handled errors, and explicit preflight requests.
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(compression());
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));

@@ -1,5 +1,5 @@
 import { mockQuestionBank } from "../data/mockQuestionBank";
-import { apiRequest } from "../../../services/httpClient";
+import { apiRequest, isBackendConfigured } from "../../../services/httpClient";
 import { normalizeDoc, normalizeDocs } from "../../../utils/normalizeMongoDoc";
 
 /**
@@ -13,7 +13,7 @@ import { normalizeDoc, normalizeDocs } from "../../../utils/normalizeMongoDoc";
  * "Force error (testing)" as the topic in the config panel.
  */
 
-const USE_BACKEND = Boolean(import.meta.env.VITE_API_BASE_URL);
+const USE_BACKEND = isBackendConfigured;
 
 const STORAGE_KEY = "studymate.quizAttempts";
 const GENERATION_LATENCY = 1300;
