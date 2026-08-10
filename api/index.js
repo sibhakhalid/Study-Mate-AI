@@ -1,10 +1,18 @@
-import app from "../backend/src/app.js";
-import { connectDB } from "../backend/src/config/db.js";
-import { env } from "../backend/src/config/env.js";
+const PRODUCTION_CLIENT_ORIGIN = "https://study-mate-ai-b41e.vercel.app";
+
+function getAllowedOrigins() {
+  return [
+    PRODUCTION_CLIENT_ORIGIN,
+    ...(process.env.CLIENT_ORIGIN || process.env.FRONTEND_URL || "")
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean),
+  ];
+}
 
 function applyCorsHeaders(req, res) {
   const origin = req.headers.origin;
-  if (!origin || !env.clientOrigins.includes(origin)) return;
+  if (!origin || !getAllowedOrigins().includes(origin)) return;
 
   res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -19,6 +27,10 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(204).end();
 
   try {
+    const [{ default: app }, { connectDB }] = await Promise.all([
+      import("../backend/src/app.js"),
+      import("../backend/src/config/db.js"),
+    ]);
     await connectDB();
     return app(req, res);
   } catch {
